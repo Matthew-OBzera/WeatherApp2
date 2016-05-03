@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+  <head>
+    <product concise-name="dwmlByDay" operational-mode="developmental" srsName="WGS 1984">
+      <creation-date refresh-frequency='PT1H'>2016-04-19T16:16:32-05:00</creation-date>
+     <category>current observations and forecast</category>
+    </product>
+    <source>
+      <production-center>Chicago, IL</production-center>
+      <credit>http://www.crh.noaa.gov/lot</credit>
+      <more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+    </source>
+  </head>
+  <data type="forecast">
+
+  <location>
+    <location-key>point1</location-key>
+    <description>Aurora, IL</description>
+    <point latitude="41.77" longitude="-88.3"/>
+    <city state="IL">Aurora</city>
+    <height datum="mean sea level">702</height>
+  </location>
+<moreWeatherInformation applicable-location="point1">http://forecast.weather.gov/MapClick.php?lat=41.77&amp;lon=-88.3</moreWeatherInformation>
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p12h-n15-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-19T17:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tonight">2016-04-19T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-20T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-20T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-21T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-21T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-22T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday Night">2016-04-22T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Saturday">2016-04-23T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Saturday Night">2016-04-23T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-24T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-24T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-25T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-25T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-26T06:00:00-05:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n8-1</layout-key>
+      <start-valid-time period-name="This Afternoon">2016-04-19T17:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday">2016-04-20T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday">2016-04-21T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday">2016-04-22T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Saturday">2016-04-23T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday">2016-04-24T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday">2016-04-25T06:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Tuesday">2016-04-26T06:00:00-05:00</start-valid-time>
+  </time-layout>
+
+  <time-layout time-coordinate="local" summarization="12hourly">
+    <layout-key>k-p24h-n7-2</layout-key>
+      <start-valid-time period-name="Tonight">2016-04-19T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Wednesday Night">2016-04-20T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Thursday Night">2016-04-21T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Friday Night">2016-04-22T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Saturday Night">2016-04-23T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Sunday Night">2016-04-24T18:00:00-05:00</start-valid-time>
+      <start-valid-time period-name="Monday Night">2016-04-25T18:00:00-05:00</start-valid-time>
+  </time-layout>
+
+
+  <parameters applicable-location="point1">
+
+    <temperature type="maximum" units="Fahrenheit" time-layout="k-p24h-n8-1">
+      <name>Daily Maximum Temperature</name>
+        <value>58</value>
+        <value>70</value>
+        <value>69</value>
+        <value>58</value>
+        <value>65</value>
+        <value>68</value>
+        <value>66</value>
+        <value>60</value>
+    </temperature>
+
+    <temperature type="minimum" units="Fahrenheit" time-layout="k-p24h-n7-2">
+      <name>Daily Minimum Temperature</name>
+        <value>52</value>
+        <value>53</value>
+        <value>44</value>
+        <value>39</value>
+        <value>46</value>
+        <value>48</value>
+        <value>43</value>
+    </temperature>
+
+    <probability-of-precipitation  type="12 hour" units="percent" time-layout="k-p12h-n15-1">
+      <name>12 Hourly Probability of Precipitation</name>
+        <value>20</value>
+        <value>20</value>
+        <value>70</value>
+        <value>70</value>
+        <value>50</value>
+        <value>20</value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+        <value xsi:nil="true"></value>
+    </probability-of-precipitation>
+
+    <weather time-layout="k-p12h-n15-1">
+      <name>Weather Type, Coverage, Intensity</name>
+        <weather-conditions weather-summary="Slight Chance Showers"/>
+        <weather-conditions weather-summary="Slight Chance Showers"/>
+        <weather-conditions weather-summary="Mostly Cloudy then Showers Likely"/>
+        <weather-conditions weather-summary="Showers Likely"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+        <weather-conditions weather-summary="Slight Chance Showers"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+        <weather-conditions weather-summary="Mostly Clear"/>
+        <weather-conditions weather-summary="Mostly Sunny"/>
+        <weather-conditions weather-summary="Slight Chance Showers"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+        <weather-conditions weather-summary="Chance Showers"/>
+    </weather>
+
+    <conditions-icon type="forecast-NWS" time-layout="k-p12h-n15-1">
+      <name>Conditions Icon</name>        <icon-link>http://forecast.weather.gov/newimages/medium/shra20.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nshra20.png</icon-link>
+        <icon-link>http://forecast.weather.gov/DualImage.php?i=bkn&amp;j=shra&amp;jp=70</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nshra70.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/shra50.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nshra20.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nfew.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/hi_nshwrs.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/shra.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nshra.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/shra.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/nshra.png</icon-link>
+        <icon-link>http://forecast.weather.gov/newimages/medium/shra.png</icon-link>
+    </conditions-icon>
+
+    <hazards time-layout="">
+      <name>Watches, Warnings, and Advisories</name>
+      <hazard-conditions>
+        <hazard headline="Hazardous Weather Outlook">
+          <hazardTextURL>http://forecast.weather.gov/showsigwx.php?warnzone=ILZ012&amp;warncounty=ILC089&amp;firewxzone=ILZ012&amp;local_place1=Aurora+IL&amp;product1=Hazardous+Weather+Outlook</hazardTextURL>
+        </hazard>
+      </hazard-conditions>
+    </hazards>
+
+    <wordedForecast time-layout="k-p12h-n15-1" dataSource="lotNetcdf" wordGenerator="markMitchell">
+      <name>Text Forecast</name>
+        <text>A 20 percent chance of showers.  Mostly cloudy, with a steady temperature around 58. East northeast wind around 15 mph, with gusts as high as 20 mph. </text>
+        <text>A 20 percent chance of showers before 1am.  Mostly cloudy, with a low around 52. East wind 10 to 15 mph, with gusts as high as 20 mph. </text>
+        <text>Showers likely and possibly a thunderstorm, mainly after 4pm.  Cloudy, with a high near 70. East southeast wind 10 to 15 mph.  Chance of precipitation is 70%. New rainfall amounts of less than a tenth of an inch, except higher amounts possible in thunderstorms. </text>
+        <text>Showers likely and possibly a thunderstorm before 1am, then a chance of showers.  Mostly cloudy, with a low around 53. South wind 5 to 10 mph.  Chance of precipitation is 70%.</text>
+        <text>A chance of showers, with thunderstorms also possible after 1pm.  Mostly cloudy, with a high near 69. South wind 5 to 10 mph becoming west in the afternoon. Winds could gust as high as 15 mph.  Chance of precipitation is 50%.</text>
+        <text>A 20 percent chance of showers before 1am.  Mostly cloudy, with a low around 44.</text>
+        <text>Mostly sunny, with a high near 58.</text>
+        <text>Mostly clear, with a low around 39.</text>
+        <text>Mostly sunny, with a high near 65.</text>
+        <text>A slight chance of showers.  Partly cloudy, with a low around 46.</text>
+        <text>A chance of showers and thunderstorms.  Partly sunny, with a high near 68.</text>
+        <text>A chance of showers and thunderstorms.  Mostly cloudy, with a low around 48.</text>
+        <text>A chance of showers.  Mostly cloudy, with a high near 66.</text>
+        <text>A chance of showers.  Mostly cloudy, with a low around 43.</text>
+        <text>A chance of showers.  Partly sunny, with a high near 60.</text>
+    </wordedForecast>
+
+</parameters>
+</data>
+<data type="current observations">
+	<location>
+		<location-key>point1</location-key>
+		<point latitude="41.9" longitude="-88.25"/>
+		<area-description>Chicago / West Chicago, Dupage Airport, IL</area-description>
+		<height datum="mean sea level" height-units="feet">758</height>
+	</location>
+	<moreWeatherInformation applicable-location="point1">http://www.nws.noaa.gov/data/obhistory/KDPA.html</moreWeatherInformation>	<time-layout time-coordinate="local">	<layout-key>k-p1h-n1-1</layout-key>	<start-valid-time period-name="current">2016-04-19T16:52:00-05:00</start-valid-time>	</time-layout>	<parameters applicable-location="point1">	<temperature type="apparent" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>55</value>	</temperature>	<temperature type="dew point" units="Fahrenheit" time-layout="k-p1h-n1-1">	<value>42</value>	</temperature>	<humidity type="relative" time-layout="k-p1h-n1-1">	<value>62</value>	</humidity>	<weather time-layout="k-p1h-n1-1">	<name>Weather Type, Coverage, Intensity</name>	<weather-conditions weather-summary="Partly Cloudy"/>	<weather-conditions>	<value>	<visibility units="statute miles">10.00</visibility>	</value>	</weather-conditions>	</weather>	<conditions-icon type="forecast-NWS" time-layout="k-p1h-n1-1">	<name>Conditions Icon</name>	<icon-link>http://forecast.weather.gov/newimages/medium/sct.png</icon-link>	</conditions-icon>	<direction type="wind" units="degrees true" time-layout="k-p1h-n1-1">	<value>40</value>	</direction>	<wind-speed type="gust" units="knots" time-layout="k-p1h-n1-1">	<value>21</value>	</wind-speed>	<wind-speed type="sustained" units="knots" time-layout="k-p1h-n1-1">	<value>12</value>	</wind-speed>		<pressure type="barometer" units="inches of mercury" time-layout="k-p1h-n1-1">			<value>30.17</value>		</pressure>	</parameters></data></dwml>
