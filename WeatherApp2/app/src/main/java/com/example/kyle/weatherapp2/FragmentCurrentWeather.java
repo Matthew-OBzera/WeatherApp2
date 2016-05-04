@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +37,12 @@ public class FragmentCurrentWeather extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate((R.layout.currentweather_fragment), container,false);
-
+        setHasOptionsMenu(true);
         getTextView(view);
 
         return view;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/currentWeather"
-            android:title="@string/current_weather"
-            app:showAsAction="never"/>
+        android:id="@+id/action_lookupZip"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_menu_search"
+        android:title="@string/lookup_zip">
+    </item>
     <item
-        android:id="@+id/forecast"
-        android:title="Forecast"
-        app:showAsAction="never"/>
-
+        android:id="@+id/action_recentzips"
+        android:orderInCategory="200"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_menu_moreoverflow"
+        android:title="@string/recent_zips">
+    </item>
+    <item
+        android:id="@+id/action_7DayForecast"
+        android:orderInCategory="300"
+        android:title="@string/sevenDay_Forecast">
+    </item>
+    <item
+        android:id="@+id/action_currentWeather"
+        android:orderInCategory="400"
+        android:title="@string/current_weather">
+    </item>
+    <item
+        android:id="@+id/action_units"
+        android:orderInCategory="500"
+        android:title="@string/units">
+    </item>
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="600"
+        android:title="@string/about">
+    </item>
 </menu>
