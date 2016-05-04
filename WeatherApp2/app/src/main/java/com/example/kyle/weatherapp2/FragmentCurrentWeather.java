@@ -44,9 +44,6 @@ public class FragmentCurrentWeather extends Fragment implements Downloader.Downl
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate((R.layout.currentweather_fragment), container, false);
-        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
-        setHasOptionsMenu(true);
         getTextView(view);
 
         return view;
