@@ -1,7 +1,6 @@
 package com.example.kyle.weatherapp2;
 
 import android.app.FragmentTransaction;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,15 +23,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
         /*Configuration configInfo = getResources().getConfiguration();*/
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
         FragmentCurrentWeather fragmentCurrentWeather = new FragmentCurrentWeather();
-        fragmentTransaction.replace(R.id.fragLayout, fragmentCurrentWeather);
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(android.R.id.content, fragmentCurrentWeather);
+
 
         /*if (configInfo.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             FragmentLandscape fragmentLandscape = new FragmentLandscape();
@@ -42,6 +39,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(android.R.id.content, fragmentPortrait);
         }*/
 
+          fragmentTransaction.commit();
 
 
 
@@ -67,10 +65,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.action_7DayForecast:
                 forecast();
-                break;
-            case R.id.action_currentWeather:
-                currentWeather();
-                break;
+                return true;
             default:
                 break;
         }
@@ -81,14 +76,14 @@ public class MainActivity extends AppCompatActivity
     private void forecast() {
         FragmentTransaction fragTrans = fragmentManager.beginTransaction();
         FragmentForecast fragmentForecast = new FragmentForecast();
-        fragTrans.replace(R.id.fragLayout, fragmentForecast);
+        fragTrans.replace(android.R.id.content, fragmentForecast);
         fragTrans.commit();
     }
 
     private void currentWeather() {
         FragmentTransaction fragTrans = fragmentManager.beginTransaction();
         FragmentCurrentWeather fragmentCurrentWeather = new FragmentCurrentWeather();
-        fragTrans.replace(R.id.fragLayout, fragmentCurrentWeather);
+        fragTrans.replace(android.R.id.content, fragmentCurrentWeather);
         fragTrans.commit();
     }
 

@@ -2,10 +2,13 @@ package com.example.kyle.weatherapp2;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
 public class FragmentCurrentWeather extends Fragment implements Downloader.DownloadListener<JSONObject> {
 
@@ -38,12 +42,18 @@ public class FragmentCurrentWeather extends Fragment implements Downloader.Downl
 
     private boolean go = false;
 
+    private LinkedList<String> recentZipcodes;
+    private String imageURL;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate((R.layout.currentweather_fragment), container, false);
+        Toolbar myToolbar = (Toolbar) view.findViewById(R.id.my_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
+        setHasOptionsMenu(true);
         getTextView(view);
 
         return view;
@@ -140,6 +150,10 @@ public class FragmentCurrentWeather extends Fragment implements Downloader.Downl
         visibilityText.setText(visStr);
         windspeedText.setText(windStr);
         gustsText.setText(gustStr);
+
+        new DownloadImageTask(image).execute(imageURL);
+
+
     }
 
     private void getTextView(View view) {
@@ -172,15 +186,10 @@ public class FragmentCurrentWeather extends Fragment implements Downloader.Downl
         windDirection = info.current.windDirectionStr();
         timeStamp = info.current.timestamp;
         conditions = info.current.summary;
+        imageURL = info.current.imageUrl;
 
         go = true;
         setText(radGrp.getCheckedRadioButtonId());
-
-
-        Resources res = context.getResources();
-        String mDrawableName = "img" + zipcodeText.getText();
-        int resID = res.getIdentifier(mDrawableName, "drawable", getActivity().getPackageName());
-        image.setImageResource(resID);
     }
 
 
@@ -237,5 +246,31 @@ public class FragmentCurrentWeather extends Fragment implements Downloader.Downl
 
         }
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
 }
 
