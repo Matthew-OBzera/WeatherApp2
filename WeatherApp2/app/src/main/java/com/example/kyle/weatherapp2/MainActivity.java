@@ -1,10 +1,8 @@
 package com.example.kyle.weatherapp2;
 
-import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -18,14 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import layout.FragmentForecast;
 
 public class MainActivity extends AppCompatActivity
-    implements FragmentForecast.OnFragmentInteractionListener
+    implements FragmentForecast.OnFragmentInteractionListener, Downloader.DownloadListener<JSONObject>
 {
     private String zipCode = "";
     android.app.FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    FragmentCurrentWeather fragmentCurrentWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(myToolbar);
 
 
-        FragmentCurrentWeather fragmentCurrentWeather = new FragmentCurrentWeather();
+        fragmentCurrentWeather = new FragmentCurrentWeather();
         fragmentTransaction.replace(R.id.fragLayout, fragmentCurrentWeather);
         fragmentTransaction.commit();
 
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         zipCode = input.getText().toString();
+                        getLocation(zipCode);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -83,7 +91,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 builder.show();
-                //getLocation(zipcode);
                 break;
             case R.id.action_recentzips:
                 View menuItemView = findViewById(R.id.action_recentzips);
@@ -113,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
     private void currentWeather() {
         FragmentTransaction fragTrans = fragmentManager.beginTransaction();
-        FragmentCurrentWeather fragmentCurrentWeather = new FragmentCurrentWeather();
+        fragmentCurrentWeather = new FragmentCurrentWeather();
         fragTrans.replace(R.id.fragLayout, fragmentCurrentWeather);
         fragTrans.commit();
     }
@@ -127,6 +134,58 @@ public class MainActivity extends AppCompatActivity
     {
 
     }
+    public void getLocation(String zipcode) {
+        Downloader<JSONObject> downloadInfo = new Downloader<>(this);
+        downloadInfo.execute("http://craiginsdev.com/zipcodes/findzip.php?zip=" + zipcode);
+    }
 
+    @Override
+    public JSONObject parseResponse(InputStream in) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            JSONObject jsonObject = new JSONObject(reader.readLine());
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void handleResult(JSONObject result) {
+        WeatherInfoIO.WeatherListener weatherDownloaded = new WeatherInfoIO.WeatherListener() {
+            @Override
+            public void handleResult(WeatherInfo result) {
+                if (result != null) {
+                    fragmentCurrentWeather.setInfo(result, getApplicationContext());
+//                    if(!recentZipCodes.contains(currentZip)){
+//                        recentZipCodes.addFirst(currentZip);
+//                        if (recentZipCodes.size() > 5){
+//                            recentZipCodes.removeLast();
+//                        }
+//                    }
+                } else {
+                    //setText(-1);
+                    //image.setImageResource(0);
+                    //go = false;
+                }
+            }
+        };
+        try {
+            String latitude = result.getString("latitude");
+            String longitude = result.getString("longitude");
+            WeatherInfoIO.loadFromUrl("http://forecast.weather.gov/MapClick.php?lat="
+                            + latitude +
+                            "&lon="
+                            + longitude +
+                            "&unit=0&lg=english&FcstType=dwml",
+                    weatherDownloaded);
+
+        } catch (JSONException e) {
+
+        }
+    }
 
 }
