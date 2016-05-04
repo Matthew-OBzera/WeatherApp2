@@ -3,8 +3,6 @@ package com.example.kyle.weatherapp2;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,19 +30,6 @@ public class FragmentForecast extends android.app.Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-<<<<<<< HEAD:WeatherApp2/app/src/main/java/com/example/kyle/weatherapp2/FragmentForecast.java
-=======
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
->>>>>>> origin/master:WeatherApp2/app/src/main/java/layout/FragmentForecast.java
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
