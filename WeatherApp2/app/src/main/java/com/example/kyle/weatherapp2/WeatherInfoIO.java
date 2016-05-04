@@ -28,6 +28,7 @@ public class WeatherInfoIO {
             Downloader<WeatherInfo> downloadInfo = new Downloader<>(listener);
             downloadInfo.execute(url);
         } catch(Exception ex) {
+
             ex.printStackTrace();
         }
     }

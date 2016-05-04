@@ -12,4 +12,5 @@
     <string name="zip3">""</string>
     <string name="zip4">""</string>
     <string name="zip5">""</string>
+    <string name="recentZipsLabel">Recent Zip Codes</string>
 </resources>

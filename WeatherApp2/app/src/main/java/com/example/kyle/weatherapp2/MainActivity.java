@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,9 +36,10 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import layout.FragmentForecast;
+
 public class MainActivity extends AppCompatActivity
-    implements FragmentForecast.OnFragmentInteractionListener, Downloader.DownloadListener<JSONObject>
-{
+        implements FragmentForecast.OnFragmentInteractionListener, Downloader.DownloadListener<JSONObject> {
     private String zipCode = "";
     android.app.FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -67,10 +71,10 @@ public class MainActivity extends AppCompatActivity
         recentZipcodes = new LinkedList<String>();
         sp = getPreferences(Context.MODE_PRIVATE);
         String recentZip = sp.getString("recentZipCodes", null);
-        if (recentZip != null){
+        if (recentZip != null) {
             try {
                 JSONArray jArray = new JSONArray(recentZip);
-                for(int i = 0; i < jArray.length(); i ++){
+                for (int i = 0; i < jArray.length(); i++) {
                     recentZipcodes.add(jArray.get(i).toString());
                 }
             } catch (JSONException e) {
@@ -114,7 +118,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_recentzips:
                 View menuItemView = findViewById(R.id.action_recentzips);
                 PopupMenu popupMenu = new PopupMenu(this, menuItemView);
-                popupMenu.inflate(R.menu.recent_zip_menu);
+                popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 000, "Recent Zip Codes");
+                for(int i = 0; i < recentZipcodes.size(); i++) {
+                    String idVal = "action_zip" + i;
+                    popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i+1, recentZipcodes.get(i));
+                }
                 popupMenu.show();
                 break;
             case R.id.action_7DayForecast:
@@ -126,7 +134,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
-
         return true;
     }
 
@@ -149,13 +156,20 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void aboutDialog()
-    {
+    private void aboutDialog() {
 
     }
+
     public void getLocation(String zipcode) {
-        Downloader<JSONObject> downloadInfo = new Downloader<>(this);
-        downloadInfo.execute("http://craiginsdev.com/zipcodes/findzip.php?zip=" + zipcode);
+        if (!isNumeric(zipcode) || zipcode.length() != 5) {
+            responseToast("Please enter a 5-digit zip code");
+        } else if (!isNetworkAvailable()) {
+            responseToast("No internet connection available");
+        } else {
+
+            Downloader<JSONObject> downloadInfo = new Downloader<>(this);
+            downloadInfo.execute("http://craiginsdev.com/zipcodes/findzip.php?zip=" + zipcode);
+        }
     }
 
     @Override
@@ -180,20 +194,24 @@ public class MainActivity extends AppCompatActivity
                 if (result != null) {
                     fragmentCurrentWeather.setInfo(result, getApplicationContext());
                     alert(result.alerts);
-                    if(!recentZipcodes.contains(zipCode)){
+                    if (!recentZipcodes.contains(zipCode)) {
                         recentZipcodes.addFirst(zipCode);
-                        if (recentZipcodes.size() > 5){
+                        if (recentZipcodes.size() > 5) {
                             recentZipcodes.removeLast();
                         }
                     }
                     JSONArray jsonArray = new JSONArray(recentZipcodes);
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("RecentZipCodes", jsonArray.toString());
+                    editor.putString("recentZipCodes", jsonArray.toString());
+                    editor.commit();
 
                 } else {
-                    //setText(-1);
-                    //image.setImageResource(0);
                     //go = false;
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Weather not found for this zip code", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         };
@@ -206,17 +224,18 @@ public class MainActivity extends AppCompatActivity
                             + longitude +
                             "&unit=0&lg=english&FcstType=dwml",
                     weatherDownloaded);
-
-        } catch (JSONException e) {
-
+        } catch (Exception e) {
+            MainActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Unknown zip code", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
     //Creates notifications with links to Weather.gov alerts
-    public void alert(List<String> alerts)
-    {
-        for (int i = 0; i < alerts.size(); i++)
-        {
+    public void alert(List<String> alerts) {
+        for (int i = 0; i < alerts.size(); i++) {
             Log.v("NumberX", alerts.get(i));
             NotificationCompat.Builder alertBuilder =
                     (NotificationCompat.Builder) new NotificationCompat.Builder(MainActivity.this).
@@ -236,4 +255,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Stack overflow
+    //Testing for internet connexion
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void responseToast(String text) {
+        Toast toast = Toast.makeText(this.getApplicationContext(), text, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    private static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 }
