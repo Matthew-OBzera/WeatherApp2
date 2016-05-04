@@ -1,13 +1,108 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.FragmentForecast">
+    tools:context=".FragmentForecast"
+    android:weightSum="1">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:gravity="center"
+            android:id="@+id/location" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.20">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:id="@+id/forecastImg"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High: "
+            android:id="@+id/highText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/highVal"
+            android:layout_weight="0.50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Low: "
+            android:id="@+id/lowText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lowVal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:text="AM"
+            android:id="@+id/amView"
+            android:gravity="left"
+            android:background="#ff0000" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:text="PM"
+            android:id="@+id/pmView"
+            android:gravity="left"
+            android:background="#0000ff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/forecastDescription"
+            android:gravity="center"
+            android:background="#0000ff" />
+    </LinearLayout>
+
+
+</LinearLayout>

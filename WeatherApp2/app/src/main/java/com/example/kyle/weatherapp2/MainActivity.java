@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import layout.FragmentForecast;
-
 public class MainActivity extends AppCompatActivity
     implements FragmentForecast.OnFragmentInteractionListener
 {
