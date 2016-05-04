@@ -1,21 +1,28 @@
 package com.example.kyle.weatherapp2;
 
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
 
 import layout.FragmentForecast;
 
@@ -33,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     android.app.FragmentManager fragmentManager = getFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     FragmentCurrentWeather fragmentCurrentWeather;
+    LinkedList<String> recentZipcodes;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +66,19 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(android.R.id.content, fragmentPortrait);
         }*/
 
-
-
-
+        recentZipcodes = new LinkedList<String>();
+        sp = getPreferences(Context.MODE_PRIVATE);
+        String recentZip = sp.getString("recentZipCodes", null);
+        if (recentZip != null){
+            try {
+                JSONArray jArray = new JSONArray(recentZip);
+                for(int i = 0; i < jArray.length(); i ++){
+                    recentZipcodes.add(jArray.get(i).toString());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -160,12 +181,17 @@ public class MainActivity extends AppCompatActivity
             public void handleResult(WeatherInfo result) {
                 if (result != null) {
                     fragmentCurrentWeather.setInfo(result, getApplicationContext());
-//                    if(!recentZipCodes.contains(currentZip)){
-//                        recentZipCodes.addFirst(currentZip);
-//                        if (recentZipCodes.size() > 5){
-//                            recentZipCodes.removeLast();
-//                        }
-//                    }
+                    alert(result.alerts);
+                    if(!recentZipcodes.contains(zipCode)){
+                        recentZipcodes.addFirst(zipCode);
+                        if (recentZipcodes.size() > 5){
+                            recentZipcodes.removeLast();
+                        }
+                    }
+                    JSONArray jsonArray = new JSONArray(recentZipcodes);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("RecentZipCodes", jsonArray.toString());
+
                 } else {
                     //setText(-1);
                     //image.setImageResource(0);
@@ -185,6 +211,30 @@ public class MainActivity extends AppCompatActivity
 
         } catch (JSONException e) {
 
+        }
+    }
+
+    //Creates notifications with links to Weather.gov alerts
+    public void alert(List<String> alerts)
+    {
+        for (int i = 0; i < alerts.size(); i++)
+        {
+            Log.v("NumberX", alerts.get(i));
+            NotificationCompat.Builder alertBuilder =
+                    (NotificationCompat.Builder) new NotificationCompat.Builder(MainActivity.this).
+                            setSmallIcon(R.drawable.alert).setContentTitle("Weather Alert").setContentText("Severe weather warning at Weather.gov");
+            Intent alertIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(alerts.get(i)));
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            MainActivity.this,
+                            0,
+                            alertIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+            alertBuilder.setContentIntent(resultPendingIntent);
+            int alertNotificationId = i;
+            NotificationManager alertNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            alertNotifyMgr.notify(alertNotificationId, alertBuilder.build());
         }
     }
 
