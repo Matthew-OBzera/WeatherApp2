@@ -6,6 +6,13 @@
     tools:context=".FragmentForecast"
     android:weightSum="1">
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
@@ -105,4 +112,10 @@
     </LinearLayout>
 
 
+<<<<<<< HEAD
 </LinearLayout>
+=======
+    </LinearLayout>
+
+</FrameLayout>
+>>>>>>> origin/master

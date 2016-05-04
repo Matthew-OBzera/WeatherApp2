@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">WeatherApp2</string>
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="lookup_zip">Zip Code</string>
+    <string name="recent_zips">Recent Zip Codes</string>
+    <string name="sevenDay_Forecast">7 Day Forecast</string>
     <string name="current_weather">Current Weather</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="units">Change Units</string>
+    <string name="about">About</string>
+    <string name="zip1">""</string>
+    <string name="zip2">""</string>
+    <string name="zip3">""</string>
+    <string name="zip4">""</string>
+    <string name="zip5">""</string>
 </resources>

@@ -10,18 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/zipCode"
-            android:layout_weight="0.74"
-            android:hint="Zip Code: "/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go"
-            android:id="@+id/goButton" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,8 +35,8 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="94dp"
+        android:layout_height="93dp"
         android:id="@+id/imageView"
 
         android:layout_gravity="center_horizontal" />
