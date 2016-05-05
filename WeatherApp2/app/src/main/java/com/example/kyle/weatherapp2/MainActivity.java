@@ -36,13 +36,12 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-import layout.FragmentForecast;
 
 public class MainActivity extends AppCompatActivity
         implements FragmentForecast.OnFragmentInteractionListener, Downloader.DownloadListener<JSONObject> {
     private String zipCode = "";
     android.app.FragmentManager fragmentManager = getFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
     FragmentCurrentWeather fragmentCurrentWeather;
     LinkedList<String> recentZipcodes;
     SharedPreferences sp;
@@ -54,21 +53,14 @@ public class MainActivity extends AppCompatActivity
         /*Configuration configInfo = getResources().getConfiguration();*/
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentCurrentWeather = new FragmentCurrentWeather();
         fragmentTransaction.replace(R.id.fragLayout, fragmentCurrentWeather);
         fragmentTransaction.commit();
 
-        /*if (configInfo.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            FragmentLandscape fragmentLandscape = new FragmentLandscape();
-            fragmentTransaction.replace(android.R.id.content, fragmentLandscape);
-        } else {
-            FragmentPortrait fragmentPortrait = new FragmentPortrait();
-            fragmentTransaction.replace(android.R.id.content, fragmentPortrait);
-        }*/
 
-        recentZipcodes = new LinkedList<String>();
+        recentZipcodes = new LinkedList<>();
         sp = getPreferences(Context.MODE_PRIVATE);
         String recentZip = sp.getString("recentZipCodes", null);
         if (recentZip != null) {
@@ -94,7 +86,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_lookupZip:
-                Context context = getApplication();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Enter Zip Code");
                 final EditText input = new EditText(this);
@@ -118,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_recentzips:
                 View menuItemView = findViewById(R.id.action_recentzips);
                 PopupMenu popupMenu = new PopupMenu(this, menuItemView);
-                popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 000, "Recent Zip Codes");
+                popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 0, "Recent Zip Codes");
                 for(int i = 0; i < recentZipcodes.size(); i++) {
                     String idVal = "action_zip" + i;
                     popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i+1, recentZipcodes.get(i));
@@ -156,9 +147,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void aboutDialog() {
+    /*private void aboutDialog() {
 
-    }
+    }*/
 
     public void getLocation(String zipcode) {
         if (!isNumeric(zipcode) || zipcode.length() != 5) {
@@ -176,12 +167,9 @@ public class MainActivity extends AppCompatActivity
     public JSONObject parseResponse(InputStream in) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            JSONObject jsonObject = new JSONObject(reader.readLine());
-            return jsonObject;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return new JSONObject(reader.readLine());
+        } catch (JSONException | IOException j) {
+            j.printStackTrace();
         }
         return null;
     }
@@ -203,7 +191,7 @@ public class MainActivity extends AppCompatActivity
                     JSONArray jsonArray = new JSONArray(recentZipcodes);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("recentZipCodes", jsonArray.toString());
-                    editor.commit();
+                    editor.apply();
 
                 } else {
                     //go = false;
@@ -249,9 +237,8 @@ public class MainActivity extends AppCompatActivity
                             alertIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
             alertBuilder.setContentIntent(resultPendingIntent);
-            int alertNotificationId = i;
             NotificationManager alertNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            alertNotifyMgr.notify(alertNotificationId, alertBuilder.build());
+            alertNotifyMgr.notify(i, alertBuilder.build());
         }
     }
 
@@ -271,10 +258,10 @@ public class MainActivity extends AppCompatActivity
 
     private static boolean isNumeric(String str) {
         try {
-            double d = Double.parseDouble(str);
+            Double.parseDouble(str);
+            return true;
         } catch (NumberFormatException nfe) {
             return false;
         }
-        return true;
     }
 }
