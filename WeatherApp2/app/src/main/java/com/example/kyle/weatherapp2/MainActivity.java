@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     android.app.FragmentManager fragmentManager = getFragmentManager();
 
     FragmentCurrentWeather fragmentCurrentWeather;
+    FragmentForecast fragmentForecast;
     LinkedList<String> recentZipcodes;
     SharedPreferences sp;
 
@@ -180,7 +181,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void handleResult(WeatherInfo result) {
                 if (result != null) {
-                    fragmentCurrentWeather.setInfo(result, getApplicationContext());
+                    fragmentCurrentWeather.setInfo(result);
+                    /*fragmentForecast.setInfo(result);*/
                     alert(result.alerts);
                     if (!recentZipcodes.contains(zipCode)) {
                         recentZipcodes.addFirst(zipCode);

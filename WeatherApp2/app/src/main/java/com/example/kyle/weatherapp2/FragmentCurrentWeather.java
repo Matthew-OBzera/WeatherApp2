@@ -1,7 +1,6 @@
 package com.example.kyle.weatherapp2;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -15,7 +14,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.io.InputStream;
-import java.util.LinkedList;
 
 public class FragmentCurrentWeather extends Fragment {
 
@@ -30,7 +28,6 @@ public class FragmentCurrentWeather extends Fragment {
 
     private boolean go = false;
 
-    private LinkedList<String> recentZipcodes;
     private String imageURL;
 
 
@@ -62,7 +59,6 @@ public class FragmentCurrentWeather extends Fragment {
         String timeStampStr, conditionsStr, tempStr, dewStr, presStr, visStr, windStr, gustStr, humidStr;
         switch (id) {
             case R.id.imperial:
-                System.out.println("got here3");
                 timeStampStr = timeStamp;
                 conditionsStr = conditions;
                 tempStr = String.valueOf((int) temperature) + "° F";
@@ -118,8 +114,6 @@ public class FragmentCurrentWeather extends Fragment {
         gustsText.setText(gustStr);
 
         new DownloadImageTask(image).execute(imageURL);
-
-
     }
 
     private void getTextView(View view) {
@@ -138,7 +132,7 @@ public class FragmentCurrentWeather extends Fragment {
 
     }
 
-    public void setInfo(WeatherInfo info, Context context) {
+    public void setInfo(WeatherInfo info) {
 
         temperature = info.current.temperature;
         dewPoint = info.current.dewPoint;
