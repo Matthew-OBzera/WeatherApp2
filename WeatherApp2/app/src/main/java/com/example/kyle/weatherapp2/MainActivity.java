@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +33,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     FragmentForecast fragmentForecast;
     LinkedList<String> recentZipcodes;
     SharedPreferences sp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +119,9 @@ public class MainActivity extends AppCompatActivity
                 View menuItemView = findViewById(R.id.action_recentzips);
                 PopupMenu popupMenu = new PopupMenu(this, menuItemView);
                 popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 0, "Recent Zip Codes");
-                for(int i = 0; i < recentZipcodes.size(); i++) {
+                for (int i = 0; i < recentZipcodes.size(); i++) {
                     String idVal = "action_zip" + i;
-                    popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i+1, recentZipcodes.get(i));
+                    popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i + 1, recentZipcodes.get(i));
                 }
                 popupMenu.show();
                 break;
@@ -181,8 +189,28 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void handleResult(WeatherInfo result) {
                 if (result != null) {
+                    Bitmap bm;
+                    File cacheDir = getApplication().getCacheDir();
+                    File f = new File(cacheDir, zipCode.toString() + ".png");
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(f);
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    if (fis != null) {
+                        bm = BitmapFactory.decodeStream(fis);
+                        fragmentCurrentWeather.setImage(bm);
+                    } else {
+                        new DownloadImageTask().execute(result.current.imageUrl);
+                    }
+
+
                     fragmentCurrentWeather.setInfo(result);
                     /*fragmentForecast.setInfo(result);*/
+
+
                     alert(result.alerts);
                     if (!recentZipcodes.contains(zipCode)) {
                         recentZipcodes.addFirst(zipCode);
@@ -194,7 +222,6 @@ public class MainActivity extends AppCompatActivity
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("recentZipCodes", jsonArray.toString());
                     editor.apply();
-
                 } else {
                     //go = false;
                     MainActivity.this.runOnUiThread(new Runnable() {
@@ -266,4 +293,45 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     }
+
+    //Stack Overflow
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        //ImageView bmImage;
+
+        //public DownloadImageTask(ImageView bmImage) {
+        //    this.bmImage = bmImage;
+        //}
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+                try {
+                    File cacheDir = getApplicationContext().getCacheDir();
+                    File f = new File(cacheDir, zipCode.toString() + ".png");
+                    FileOutputStream out = new FileOutputStream(f);
+                    mIcon11.compress(
+                            Bitmap.CompressFormat.PNG,
+                            100, out);
+                    out.flush();
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            fragmentCurrentWeather.setImage(result);
+        }
+    }
 }
+
