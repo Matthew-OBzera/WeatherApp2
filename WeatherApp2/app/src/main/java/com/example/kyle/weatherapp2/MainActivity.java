@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
 
     private void forecast() {
         FragmentTransaction fragTrans = fragmentManager.beginTransaction();
-        FragmentForecast fragmentForecast = new FragmentForecast();
+        fragmentForecast = new FragmentForecast();
         fragTrans.replace(R.id.fragLayout, fragmentForecast);
         fragTrans.commit();
     }
