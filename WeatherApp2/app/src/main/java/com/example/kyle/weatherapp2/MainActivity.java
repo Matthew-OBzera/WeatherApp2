@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity
 
     FragmentCurrentWeather fragmentCurrentWeather;
     FragmentForecast fragmentForecast;
+
+    DayForecast dayForecast = new DayForecast();
+
     LinkedList<String> recentZipcodes;
     SharedPreferences sp;
 
@@ -208,7 +211,7 @@ public class MainActivity extends AppCompatActivity
 
 
                     fragmentCurrentWeather.setInfo(result);
-                    /*fragmentForecast.setInfo(result);*/
+                    fragmentForecast.setInfo(result, 0);
 
 
                     alert(result.alerts);

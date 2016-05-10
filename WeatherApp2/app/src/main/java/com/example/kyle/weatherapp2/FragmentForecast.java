@@ -34,6 +34,8 @@ public class FragmentForecast extends android.app.Fragment {
         return view;
     }
 
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -53,8 +55,8 @@ public class FragmentForecast extends android.app.Fragment {
                 lowStr = String.valueOf((int) (lowTemp - 32) * (5.0 / 9.0)) + "° C";
                 break;
             default:
-                locStr = "";
-                highStr = "";
+                locStr = "Hey Look @ me in the FragmentForecast.java file";
+                highStr = "We're default actions!";
                 lowStr = "";
                 forecastStr = "";
                 break;
@@ -77,13 +79,15 @@ public class FragmentForecast extends android.app.Fragment {
         icon = (ImageView)view.findViewById(R.id.forecastImg);
     }
 
-    public void setInfo(WeatherInfo info, DayForecast dayForecast) {
+    public void setInfo(WeatherInfo info, int index) {
         areaLocation = info.location.name;
-        highTemp = dayForecast.amForecast.temperature;
-        lowTemp = dayForecast.amForecast.temperature;
-        forecastDesc = dayForecast.amForecast.description;
+        highTemp = info.forecast.get(index).pmForecast.temperature;
+        lowTemp = info.forecast.get(index).pmForecast.temperature;
+        forecastDesc = info.forecast.get(index).pmForecast.description;
 
-        imageURL = dayForecast.icon;
+        imageURL = info.forecast.get(index).icon;
+
+        setText(0);
     }
 
     //Stack Overflow
