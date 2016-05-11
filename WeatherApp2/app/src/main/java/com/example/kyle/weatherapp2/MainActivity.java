@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentCurrentWeather = new FragmentCurrentWeather();
+        fragmentForecast = new FragmentForecast();
         fragmentTransaction.replace(R.id.fragLayout, fragmentCurrentWeather);
         fragmentTransaction.commit();
 
@@ -125,6 +127,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_recentzips:
                 View menuItemView = findViewById(R.id.action_recentzips);
                 PopupMenu popupMenu = new PopupMenu(this, menuItemView);
+                popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 0, "Recent Zip Codes");
+                for (int i = 0; i < recentZipcodes.size(); i++) {
+                    String idVal = "action_zip" + (i+1);
+                    popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i + 1, recentZipcodes.get(i));
+                }
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
@@ -149,11 +156,6 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     }
                 });
-                popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 0, "Recent Zip Codes");
-                for (int i = 0; i < recentZipcodes.size(); i++) {
-                    String idVal = "action_zip" + i;
-                    popupMenu.getMenu().add(1, getResources().getIdentifier(idVal, "id", getPackageName()), i + 1, recentZipcodes.get(i));
-                }
                 popupMenu.show();
                 break;
             case R.id.action_7DayForecast:
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.action_about:
                 final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
-                aboutBuilder.setMessage("Written by: Gerardo Paleo, Justin Long, Kyle, Matthew OBzera" +
+                aboutBuilder.setMessage("Written by: Gerardo Paleo, Justin Long, Kyle Loveless, Matthew OBzera" +
                                         " \n" + "Data from weather.gov" );
                 aboutBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -259,7 +261,7 @@ public class MainActivity extends AppCompatActivity
 
 
                     fragmentCurrentWeather.setInfo(result);
-                    fragmentForecast.setInfo(result, 0);
+                    //fragmentForecast.setInfo(result, 0);
 
 
                     alert(result.alerts);
