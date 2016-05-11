@@ -26,7 +26,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -34,7 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,6 +54,9 @@ public class MainActivity extends AppCompatActivity
 
     DayForecast dayForecast = new DayForecast();
 
+
+    boolean curFrag;
+
     public static int UNIT = 0;
     public static final int IMPERIAL = 0;
     public static final int METRIC = 1;
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        curFrag = false;
 
         fragmentCurrentWeather = new FragmentCurrentWeather();
         fragmentForecast = new FragmentForecast();
@@ -159,9 +162,11 @@ public class MainActivity extends AppCompatActivity
                 popupMenu.show();
                 break;
             case R.id.action_7DayForecast:
+                curFrag = true;
                 forecast();
                 break;
             case R.id.action_currentWeather:
+                curFrag = false;
                 currentWeather();
                 break;
             case R.id.action_units:
@@ -260,9 +265,10 @@ public class MainActivity extends AppCompatActivity
                     }
 
 
-                    fragmentCurrentWeather.setInfo(result);
-                    //fragmentForecast.setInfo(result, 0);
-
+                    if(curFrag == false)
+                        fragmentCurrentWeather.setInfo(result);
+                    else
+                        fragmentForecast.setInfo(result, 0);
 
                     alert(result.alerts);
                     if (!recentZipcodes.contains(zipCode)) {
