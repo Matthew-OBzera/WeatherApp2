@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity
 
     DayForecast dayForecast = new DayForecast();
 
+    public static int UNIT = 0;
+    public static final int IMPERIAL = 0;
+    public static final int METRIC = 1;
     LinkedList<String> recentZipcodes;
     SharedPreferences sp;
 
@@ -121,6 +125,30 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_recentzips:
                 View menuItemView = findViewById(R.id.action_recentzips);
                 PopupMenu popupMenu = new PopupMenu(this, menuItemView);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_zip1:
+                                getLocation(recentZipcodes.get(0));
+                                break;
+                            case R.id.action_zip2:
+                                getLocation(recentZipcodes.get(1));
+                                break;
+                            case R.id.action_zip3:
+                                getLocation(recentZipcodes.get(2));
+                                break;
+                            case R.id.action_zip4:
+                                getLocation(recentZipcodes.get(3));
+                                break;
+                            case R.id.action_zip5:
+                                getLocation(recentZipcodes.get(4));
+                                break;
+                            default:
+                                break;
+                        }
+                        return true;
+                    }
+                });
                 popupMenu.getMenu().add(1, R.id.action_recentZipLabel, 0, "Recent Zip Codes");
                 for (int i = 0; i < recentZipcodes.size(); i++) {
                     String idVal = "action_zip" + i;
@@ -133,6 +161,26 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.action_currentWeather:
                 currentWeather();
+                break;
+            case R.id.action_units:
+                if(UNIT == IMPERIAL){
+                    UNIT = METRIC;
+                }
+                else{
+                    UNIT = IMPERIAL;
+                }
+                break;
+            case R.id.action_about:
+                final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
+                aboutBuilder.setMessage("Written by: Gerardo Paleo, Justin Long, Kyle, Matthew OBzera" +
+                                        " \n" + "Data from weather.gov" );
+                aboutBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                aboutBuilder.show();
                 break;
             default:
                 break;
