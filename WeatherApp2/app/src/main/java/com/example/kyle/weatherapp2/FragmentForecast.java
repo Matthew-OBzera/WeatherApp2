@@ -19,16 +19,23 @@ public class FragmentForecast extends android.app.Fragment {
     private TextView location, highVal, lowVal, forecast;
     private ImageView icon;
 
+
     private String areaLocation, imageURL, forecastDesc;
     private double highTemp, lowTemp;
+
+    float beginX, endX;
+    int index;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate((R.layout.forecast_fragment), container, false);
+        final View view = inflater.inflate((R.layout.forecast_fragment), container, false);
         getTextView(view);
+
+
+
 
         // Inflate the layout for this fragment
         return view;
@@ -39,18 +46,19 @@ public class FragmentForecast extends android.app.Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     private void setText(int id) {
         String locStr, highStr, lowStr, forecastStr;
         locStr = areaLocation;
         forecastStr = forecastDesc;
-        switch(id) {
-            case R.id.imperial:
+        switch(MainActivity.UNIT) {
+            case 0:
                 highStr = String.valueOf((int) highTemp) + "° F";
                 lowStr = String.valueOf((int) lowTemp) + "° F";
                 break;
-            case R.id.metric:
+            case 1:
                 highStr = String.valueOf((int) (highTemp - 32) * (5.0 / 9.0)) + "° C";
                 lowStr = String.valueOf((int) (lowTemp - 32) * (5.0 / 9.0)) + "° C";
                 break;
@@ -79,7 +87,7 @@ public class FragmentForecast extends android.app.Fragment {
         icon = (ImageView)view.findViewById(R.id.forecastImg);
     }
 
-    public void setInfo(WeatherInfo info, int index) {
+    public void setInfo(WeatherInfo info,int index) {
         areaLocation = info.location.name;
         highTemp = info.forecast.get(index).pmForecast.temperature;
         lowTemp = info.forecast.get(index).pmForecast.temperature;
@@ -120,4 +128,9 @@ public class FragmentForecast extends android.app.Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
+
+
 }

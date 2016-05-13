@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -55,8 +56,13 @@ public class MainActivity extends AppCompatActivity
     DayForecast dayForecast = new DayForecast();
 
 
-    boolean curFrag;
+    static WeatherInfo weatherInfo;
 
+
+    boolean curFrag;
+    float beginX, endX;
+
+    public static int index;
     public static int UNIT = 0;
     public static final int IMPERIAL = 0;
     public static final int METRIC = 1;
@@ -79,6 +85,8 @@ public class MainActivity extends AppCompatActivity
         fragmentForecast = new FragmentForecast();
         fragmentTransaction.replace(R.id.fragLayout, fragmentCurrentWeather);
         fragmentTransaction.commit();
+
+        /*View linearLayout = findViewById(R.id.frag_layout);*/
 
 
         recentZipcodes = new LinkedList<>();
@@ -265,6 +273,8 @@ public class MainActivity extends AppCompatActivity
                     }
 
 
+                    weatherInfo = result;
+
                     if(curFrag == false)
                         fragmentCurrentWeather.setInfo(result);
                     else
@@ -391,6 +401,54 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Bitmap result) {
             fragmentCurrentWeather.setImage(result);
         }
+
+        public boolean onTouchEvent(MotionEvent ev) {
+            int action = ev.getAction();
+
+            switch(action) {
+                case MotionEvent.ACTION_DOWN: {
+                    beginX = ev.getX();
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    endX = ev.getX();
+                }
+            }
+
+            if(beginX > (endX + 10)) {
+                index++;
+            }
+
+            else if(endX > (beginX + 10)) {
+                index--;
+            }
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                beginX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                endX = event.getX();
+                if(beginX > endX)
+                index++;
+            else if(beginX < endX)
+                index--;
+
+                if(curFrag = true) {
+                    fragmentForecast.setInfo(weatherInfo, index);
+                }
+                break;
+        }
+
+
+
+        return super.onTouchEvent(event);
     }
 }
 
