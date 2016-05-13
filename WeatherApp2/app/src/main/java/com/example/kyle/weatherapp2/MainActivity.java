@@ -180,9 +180,17 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_units:
                 if(UNIT == IMPERIAL){
                     UNIT = METRIC;
+                    if(curFrag == false)
+                        fragmentCurrentWeather.setText();
+                    else
+                        fragmentForecast.setText();
                 }
                 else{
                     UNIT = IMPERIAL;
+                    if(curFrag == false)
+                        fragmentCurrentWeather.setText();
+                    else
+                        fragmentForecast.setText();
                 }
                 break;
             case R.id.action_about:

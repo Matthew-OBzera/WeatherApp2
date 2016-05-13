@@ -49,22 +49,22 @@ public class FragmentForecast extends android.app.Fragment {
 
     }
 
-    private void setText(int id) {
+    public void setText() {
         String locStr, highStr, lowStr, forecastStr;
         locStr = areaLocation;
         forecastStr = forecastDesc;
         switch(MainActivity.UNIT) {
-            case 0:
+            case MainActivity.IMPERIAL:
                 highStr = String.valueOf((int) highTemp) + "° F";
                 lowStr = String.valueOf((int) lowTemp) + "° F";
                 break;
-            case 1:
+            case MainActivity.METRIC:
                 highStr = String.valueOf((int) (highTemp - 32) * (5.0 / 9.0)) + "° C";
                 lowStr = String.valueOf((int) (lowTemp - 32) * (5.0 / 9.0)) + "° C";
                 break;
             default:
-                locStr = "Hey Look @ me in the FragmentForecast.java file";
-                highStr = "We're default actions!";
+                locStr = "";
+                highStr = "";
                 lowStr = "";
                 forecastStr = "";
                 break;
@@ -95,7 +95,7 @@ public class FragmentForecast extends android.app.Fragment {
 
         imageURL = info.forecast.get(index).icon;
 
-        setText(0);
+        setText();
     }
 
     //Stack Overflow

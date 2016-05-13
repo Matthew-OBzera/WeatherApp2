@@ -41,19 +41,12 @@ public class FragmentCurrentWeather extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup grp, int id) {
-                if (go) {
-                    setText(id);
-                }
-            }
-        });
     }
 
-    private void setText(int id) {
+    public void setText() {
         String timeStampStr, conditionsStr, tempStr, dewStr, presStr, visStr, windStr, gustStr, humidStr;
-        switch (id) {
-            case R.id.imperial:
+        switch (MainActivity.UNIT) {
+            case MainActivity.IMPERIAL:
                 timeStampStr = timeStamp;
                 conditionsStr = conditions;
                 tempStr = String.valueOf((int) temperature) + "° F";
@@ -69,7 +62,7 @@ public class FragmentCurrentWeather extends Fragment {
                     gustStr = String.valueOf((int) (gusts)) + " mph";
                 }
                 break;
-            case R.id.metric:
+            case MainActivity.METRIC:
                 timeStampStr = timeStamp;
                 conditionsStr = conditions;
                 tempStr = String.valueOf((int) ((temperature - 32) * (5.0 / 9.0))) + "° C";
@@ -141,7 +134,7 @@ public class FragmentCurrentWeather extends Fragment {
         imageURL = info.current.imageUrl;
 
         go = true;
-        setText(radGrp.getCheckedRadioButtonId());
+        setText();
     }
 
     public void setImage(Bitmap bm){
