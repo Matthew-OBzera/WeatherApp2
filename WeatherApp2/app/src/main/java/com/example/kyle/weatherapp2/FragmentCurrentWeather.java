@@ -113,7 +113,6 @@ public class FragmentCurrentWeather extends Fragment {
         visibilityText = (TextView) view.findViewById(R.id.visibilityVal);
         windspeedText = (TextView) view.findViewById(R.id.windSpeedVal);
         gustsText = (TextView) view.findViewById(R.id.gustsVal);
-        radGrp = (RadioGroup) view.findViewById(R.id.radioGroup);
         image = (ImageView) view.findViewById(R.id.imageView);
 
     }
