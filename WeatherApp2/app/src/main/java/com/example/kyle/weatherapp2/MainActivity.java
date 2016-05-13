@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity
 
                     weatherInfo = result;
 
-                    if(curFrag == false)
+                    if(!curFrag)
                         fragmentCurrentWeather.setInfo(result);
                     else
                         fragmentForecast.setInfo(result, 0);
@@ -410,28 +410,6 @@ public class MainActivity extends AppCompatActivity
             fragmentCurrentWeather.setImage(result);
         }
 
-        public boolean onTouchEvent(MotionEvent ev) {
-            int action = ev.getAction();
-
-            switch(action) {
-                case MotionEvent.ACTION_DOWN: {
-                    beginX = ev.getX();
-                    break;
-                }
-                case MotionEvent.ACTION_UP: {
-                    endX = ev.getX();
-                }
-            }
-
-            if(beginX > (endX + 10)) {
-                index++;
-            }
-
-            else if(endX > (beginX + 10)) {
-                index--;
-            }
-            return true;
-        }
     }
 
     @Override
@@ -443,19 +421,22 @@ public class MainActivity extends AppCompatActivity
                 break;
             case MotionEvent.ACTION_UP:
                 endX = event.getX();
-                if(beginX > endX)
-                index++;
-            else if(beginX < endX)
-                index--;
+                if(beginX > endX) {
+                    if (index < 7) {
+                        index++;
+                    }
+                }
+                else if(beginX < endX) {
+                        if (index > 0) {
+                            index--;
+                        }
+                }
 
                 if(curFrag = true) {
                     fragmentForecast.setInfo(weatherInfo, index);
                 }
                 break;
         }
-
-
-
         return super.onTouchEvent(event);
     }
 }

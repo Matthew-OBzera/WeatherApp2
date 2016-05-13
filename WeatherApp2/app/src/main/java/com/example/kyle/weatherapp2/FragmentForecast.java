@@ -89,8 +89,12 @@ public class FragmentForecast extends android.app.Fragment {
 
     public void setInfo(WeatherInfo info,int index) {
         areaLocation = info.location.name;
-        highTemp = info.forecast.get(index).pmForecast.temperature;
-        lowTemp = info.forecast.get(index).pmForecast.temperature;
+        if(info.forecast.get(index).amForecast != null) {
+            highTemp = info.forecast.get(index).amForecast.temperature;
+        }
+        if(info.forecast.get(index).pmForecast != null) {
+            lowTemp = info.forecast.get(index).pmForecast.temperature;
+        }
         forecastDesc = info.forecast.get(index).pmForecast.description;
 
         imageURL = info.forecast.get(index).icon;
