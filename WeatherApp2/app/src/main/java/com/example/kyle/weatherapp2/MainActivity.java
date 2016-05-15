@@ -276,8 +276,10 @@ public class MainActivity extends AppCompatActivity
                     if (fis != null) {
                         bm = BitmapFactory.decodeStream(fis);
                         fragmentCurrentWeather.setImage(bm);
+                        fragmentForecast.setImage(bm);
                     } else {
                         new DownloadImageTask().execute(result.current.imageUrl);
+                        new DownloadImageTask().execute(result.forecast.get(index).icon);
                     }
 
 
@@ -407,7 +409,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         protected void onPostExecute(Bitmap result) {
-            fragmentCurrentWeather.setImage(result);
+            if(!curFrag) {
+                fragmentCurrentWeather.setImage(result);
+            }
+            else {
+                fragmentForecast.setImage(result);
+            }
         }
 
     }
@@ -432,7 +439,7 @@ public class MainActivity extends AppCompatActivity
                         }
                 }
 
-                if(curFrag = true) {
+                if(curFrag) {
                     fragmentForecast.setInfo(weatherInfo, index);
                 }
                 break;

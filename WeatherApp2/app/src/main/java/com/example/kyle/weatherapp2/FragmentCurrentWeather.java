@@ -7,21 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class FragmentCurrentWeather extends Fragment {
 
     private TextView currentTimeText, conditionText, tempText, dewPointText, relHumidityText, pressureText, visibilityText,
             windspeedText, gustsText;
-    private RadioGroup radGrp;
 
     private ImageView image;
 
     private double temperature, dewPoint, humidity, pressure, visibility, windspeed, gusts;
     private String windDirection, timeStamp, conditions;
 
-    private boolean go = false;
 
     private String imageURL;
 
@@ -132,7 +129,6 @@ public class FragmentCurrentWeather extends Fragment {
         conditions = info.current.summary;
         imageURL = info.current.imageUrl;
 
-        go = true;
         setText();
     }
 

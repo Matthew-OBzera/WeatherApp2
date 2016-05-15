@@ -1,18 +1,13 @@
 package com.example.kyle.weatherapp2;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.InputStream;
 
 public class FragmentForecast extends android.app.Fragment {
 
@@ -93,8 +88,6 @@ public class FragmentForecast extends android.app.Fragment {
         highVal.setText(highStr);
         lowVal.setText(lowStr);
         forecast.setText(forecastStr);
-
-        new DownloadImageTask(icon).execute(imageURL);
     }
 
     private void getTextView(View view) {
@@ -156,30 +149,8 @@ public class FragmentForecast extends android.app.Fragment {
         setText();
     }
 
-    //Stack Overflow
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+    public void setImage(Bitmap bm) {
+        icon.setImageBitmap(bm);
     }
 
     public interface OnFragmentInteractionListener {
