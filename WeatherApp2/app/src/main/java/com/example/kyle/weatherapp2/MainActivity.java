@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity
             case MotionEvent.ACTION_UP:
                 endX = event.getX();
                 if(beginX > endX) {
-                    if (index < 7) {
+                    if (index <= 6) {
                         index++;
                     }
                 }

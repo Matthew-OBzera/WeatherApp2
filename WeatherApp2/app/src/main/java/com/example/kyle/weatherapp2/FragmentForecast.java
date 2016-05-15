@@ -16,16 +16,17 @@ import java.io.InputStream;
 
 public class FragmentForecast extends android.app.Fragment {
 
-    private TextView location, highVal, lowVal, forecast;
+    private TextView location, highVal, lowVal, forecast, amTab, pmTab;
     private ImageView icon;
 
 
     private String areaLocation, imageURL, forecastDesc;
     private double highTemp, lowTemp;
 
-    float beginX, endX;
-    int index;
+    private boolean tabFlag;
 
+    int index;
+    WeatherInfo weatherInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,12 +35,31 @@ public class FragmentForecast extends android.app.Fragment {
         final View view = inflater.inflate((R.layout.forecast_fragment), container, false);
         getTextView(view);
 
-
+        amTab.setOnClickListener(handleAM);
+        pmTab.setOnClickListener(handlePM);
 
 
         // Inflate the layout for this fragment
         return view;
     }
+
+    View.OnClickListener handleAM = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            tabFlag = false;
+            forecast.setBackgroundColor(getResources().getColor(R.color.amTabColor));
+            setInfo(weatherInfo,index);
+        }
+    };
+
+    View.OnClickListener handlePM = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            tabFlag = true;
+            forecast.setBackgroundColor(getResources().getColor(R.color.pmTabColor));
+            setInfo(weatherInfo, index);
+        }
+    };
 
 
 
@@ -83,19 +103,53 @@ public class FragmentForecast extends android.app.Fragment {
         highVal = (TextView)view.findViewById(R.id.highVal);
         lowVal = (TextView)view.findViewById(R.id.lowVal);
         forecast = (TextView)view.findViewById(R.id.forecast);
+        amTab = (TextView)view.findViewById(R.id.amView);
+        pmTab = (TextView)view.findViewById(R.id.pmView);
 
         icon = (ImageView)view.findViewById(R.id.forecastImg);
     }
 
     public void setInfo(WeatherInfo info,int index) {
+        weatherInfo = info;
+        this.index = index;
+
         areaLocation = info.location.name;
+
         if(info.forecast.get(index).amForecast != null) {
             highTemp = info.forecast.get(index).amForecast.temperature;
+            amTab.setText("AM\n" + info.forecast.get(index).amForecast.description);
         }
+        else {
+            highTemp = 0.0;
+            amTab.setText("AM\nNot Available at this time.");
+        }
+
         if(info.forecast.get(index).pmForecast != null) {
             lowTemp = info.forecast.get(index).pmForecast.temperature;
+            pmTab.setText("PM\n" + info.forecast.get(index).pmForecast.description);
         }
-        forecastDesc = info.forecast.get(index).pmForecast.description;
+        else {
+            lowTemp = 0.0;
+            pmTab.setText("PM\nNot Available at this time.");
+        }
+
+        if(!tabFlag) {
+            if(info.forecast.get(index).amForecast != null){
+                forecastDesc = info.forecast.get(index).amForecast.details;
+            }
+            else {
+                forecastDesc = "Not Available at this time.";
+            }
+        }
+        else {
+            if(info.forecast.get(index).pmForecast != null) {
+                forecastDesc = info.forecast.get(index).pmForecast.details;
+            }
+            else {
+                forecastDesc = "Not Available at this time.";
+            }
+        }
+
 
         imageURL = info.forecast.get(index).icon;
 
