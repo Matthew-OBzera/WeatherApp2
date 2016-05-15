@@ -44,6 +44,16 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *   _____                    _  _       _     ___  _
+    |_   _|___  __ _  _ __   | \| | ___ | |_  / __|| |_   ___  _ _  ___
+      | | / -_)/ _` || '  \  | .` |/ _ \|  _| \__ \| ' \ / _ \| '_|/ -_)
+      |_| \___|\__,_||_|_|_| |_|\_|\___/ \__| |___/|_||_|\___/|_|  \___|
+
+ Matt, GP, Justin, Kyle
+
+ */
+
 
 public class MainActivity extends AppCompatActivity
         implements FragmentForecast.OnFragmentInteractionListener, Downloader.DownloadListener<JSONObject> {
